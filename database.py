@@ -1,8 +1,14 @@
 from datetime import datetime,timezone
 from sqlalchemy import create_engine,Column, DateTime
 from sqlalchemy.orm import sessionmaker, declarative_base
+import os
+from dotenv import load_dotenv
 
-database_url = "postgresql://postgres:postgres@localhost:5432/probe_db"
+load_dotenv()
+
+database_url = os.getenv("database_url")
+if not database_url:
+   raise ValueError("CRITICAL CONFIG ERROR: database_url is missing from the env")
 
 engine = create_engine(database_url, echo=False, future=True)
 

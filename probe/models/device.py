@@ -2,11 +2,12 @@ import uuid
 from sqlalchemy import (
     Column,
     ForeignKey,
-    String
+    String,
+    Enum
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-
+from enums import DeviceStatus
 
 
 from database import Base, TimestampMixin
@@ -21,7 +22,7 @@ class Device(Base, TimestampMixin):
     error_code = Column(String, nullable=True)
     channel = Column(String, nullable=False)
     description = Column(String, nullable=True)
-    status = Column(String, nullable=False)
+    status = Column(Enum(DeviceStatus), nullable=False)
 
 
 
