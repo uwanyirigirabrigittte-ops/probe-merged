@@ -7,7 +7,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-from enums import BookingStatus
+from .enums import BookingStatus
 
 
 
@@ -23,5 +23,5 @@ class Booking(Base, TimestampMixin):
     battery_id = Column(UUID(as_uuid=True), ForeignKey("batteries.battery_id"), nullable=False)
     status = Column(Enum(BookingStatus), nullable=False)
 
-    buyer = relationship("users", back_populates="bookings")
-    battery = relationship("batteries", back_populates="bookings")
+    buyer = relationship("User", back_populates="bookings")
+    battery = relationship("Battery", back_populates="bookings")
