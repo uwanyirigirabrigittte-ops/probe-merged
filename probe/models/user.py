@@ -8,7 +8,7 @@ from sqlalchemy import(
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from database import Base, TimestampMixin
-from enums import UserType
+from .enums import UserType
 
 
 
@@ -23,6 +23,6 @@ class User(Base, TimestampMixin):
     user_type = Column(Enum(UserType), nullable=False)
     company_name = Column(String, nullable=False)
 
-    devices = relationship("devices", back_populates="users")
-    batteries = relationship("batteries", back_populates="users")
-    bookings = relationship("bookings", back_populates="users")
+    devices = relationship("Device", back_populates="user")
+    batteries = relationship("Battery", back_populates="recycler")
+    bookings = relationship("Booking", back_populates="buyer")

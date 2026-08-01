@@ -26,5 +26,5 @@ class SensorReading(Base, TimestampMixin):
 
 
 
-    device = relationship("devices", back_populates="sensor_readings")
-    battery = relationship("batteries", back_populates="sensor_readings")
+    device = relationship("Device", back_populates="sensor_readings")
+    battery = relationship("Battery", back_populates="sensor_readings")
