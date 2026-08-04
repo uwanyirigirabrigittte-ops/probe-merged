@@ -41,6 +41,7 @@ class BatteryRepository:
    def delete(self, db: Session, db_obj: Battery):
        db.delete(db_obj)
        db.commit()
+       return True
 
 
 battery_repository = BatteryRepository()
