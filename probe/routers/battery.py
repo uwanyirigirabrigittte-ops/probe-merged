@@ -38,7 +38,7 @@ def route_create_battery(data: BatteryCreate, db: Session = Depends(get_db)):
        raise HTTPException(status_code=400, detail=f"Failed to log battery: {str(err)}")
 
 
-@router.put("/{battery_id}", response_model=BatteryRead)
+@router.patch("/{battery_id}", response_model=BatteryRead)
 def route_update_battery(battery_id: uuid.UUID, data: BatteryUpdate, db: Session = Depends(get_db)):
    db_battery = update_battery(db, battery_id, data)
    if not db_battery:
