@@ -30,7 +30,7 @@ def route_create_device(data: DeviceCreate, db: Session = Depends(get_db)):
     return create_device(db, data)
 
 
-@router.put("/{device_id}", response_model=DeviceRead)
+@router.patch("/{device_id}", response_model=DeviceRead)
 def route_update_device(device_id: uuid.UUID, data: DeviceUpdate, db: Session = Depends(get_db)):
     return update_device(db, device_id, data)
 
