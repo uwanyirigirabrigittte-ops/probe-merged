@@ -11,6 +11,10 @@ class DeviceRepository:
         return db.query(Device).filter(Device.device_id == device_id).first()
 
     @staticmethod
+    def get_by_recycler_id(db: Session, recycler_id: UUID) -> list[Device]:
+        return db.query(Device).filter(Device.recycler_id == recycler_id).all()
+
+    @staticmethod
     def get_all(db: Session) -> list[Device]:
         return db.query(Device).all()
 

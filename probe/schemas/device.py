@@ -16,11 +16,10 @@ class DeviceCreate(DeviceBase):
 
 
 class DeviceUpdate(BaseModel):
-   recycler_id: UUID | None = None
-   error_code: str | None = None
-   channel: str | None = None
-   description: str | None = None
-   status: DeviceStatus | None = None
+    error_code: str | None = None
+    channel: str | None = None
+    description: str | None = None
+    status: DeviceStatus | None = None
     
 class DeviceRead(DeviceBase):
    model_config = ConfigDict(from_attributes=True)
