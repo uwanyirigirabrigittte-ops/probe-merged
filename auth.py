@@ -45,7 +45,6 @@ def get_current_user(token=Depends(oauth2_scheme), db: Session = Depends(get_db)
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
     return user
 
-
 def require_recycler(current_user=Depends(get_current_user)):
     user_type = (
         current_user.user_type.value
