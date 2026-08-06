@@ -40,7 +40,7 @@ def route_create_user(data: UserCreate, db: Session = Depends(get_db)):
 def route_login(email: str, password: str, db: Session = Depends(get_db)):
    return authenticate_user(db, email, password)
 
-@router.put("/{user_id}", response_model=UserRead)
+@router.patch("/{user_id}", response_model=UserRead)
 def route_update_user(user_id: uuid.UUID, data: UserUpdate, db: Session = Depends(get_db), current_user=Depends(require_recycler)):
    db_user = update_user(db, str(user_id), data)
    if not db_user:
@@ -50,5 +50,5 @@ def route_update_user(user_id: uuid.UUID, data: UserUpdate, db: Session = Depend
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def route_delete_user(user_id: uuid.UUID, db: Session = Depends(get_db), current_user=Depends(require_recycler)):
    success = delete_user(db, str(user_id))
-   if not success:
+   if not success:                        
        raise HTTPException(status_code=404, detail="User record not found")
