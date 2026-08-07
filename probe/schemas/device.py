@@ -5,11 +5,12 @@ from pydantic import BaseModel, ConfigDict
 
 
 class DeviceBase(BaseModel):
+   hardware_id: str
    recycler_id: UUID
    error_code: str | None = None
    channel: str
    description: str | None = None
-   status:DeviceStatus
+   status:DeviceStatus 
   
 class DeviceCreate(DeviceBase):
    pass
@@ -26,5 +27,3 @@ class DeviceRead(DeviceBase):
   
    device_id: UUID
    created_at: datetime
-
-

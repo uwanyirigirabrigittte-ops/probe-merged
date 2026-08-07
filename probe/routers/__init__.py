@@ -1,1 +1,2 @@
-from .device import router
+from .device import router as device_router
+
