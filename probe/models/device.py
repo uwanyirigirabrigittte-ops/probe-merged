@@ -15,7 +15,7 @@ class Device(Base, TimestampMixin):
     __tablename__ = "devices"
 
     device_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    hardware_id = Column(String, unique=True, nullable=False)
+    serial_number = Column(String, unique=True, nullable=False)
     recycler_id = Column(UUID(as_uuid=True), ForeignKey("users.user_id"), nullable=False)
     error_code = Column(String, nullable=True)
     channel = Column(String, nullable=False)

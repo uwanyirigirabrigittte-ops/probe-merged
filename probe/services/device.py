@@ -17,25 +17,32 @@ def get_device(db: Session, device_id: UUID):
     return device
 
 
+def get_device_by_serial_number(db: Session, serial_number: str):
+    device = DeviceRepository.get_by_serial_number(db, serial_number)
+    if not device:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Device not found")
+    return device
+
+
 def list_devices(db: Session):
     return DeviceRepository.get_all(db)
 
 
 def create_device(db: Session, data: DeviceCreate):
-    clean_hardware_id = data.hardware_id.strip()
+    clean_serial_number = data.serial_number.strip()
     clean_channel = data.channel.strip()
     clean_status = data.status.value.strip() if hasattr(data.status, 'value') else str(data.status).strip()
 
-    if not clean_hardware_id:
+    if not clean_serial_number:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Hardware ID cannot be empty or whitespace."
+            detail="Serial number cannot be empty or whitespace."
         )
 
-    if DeviceRepository.get_by_hardware_id(db, clean_hardware_id):
+    if DeviceRepository.get_by_serial_number(db, clean_serial_number):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="A device with this hardware ID already exists."
+            detail="A device with this serial number already exists."
         )
 
     if not clean_channel or not clean_status:
@@ -60,7 +67,7 @@ def create_device(db: Session, data: DeviceCreate):
         )
 
     dumped_data = data.model_dump()
-    dumped_data["hardware_id"] = clean_hardware_id
+    dumped_data["serial_number"] = clean_serial_number
     dumped_data["channel"] = clean_channel
     dumped_data["status"] = clean_status
     if data.description:
@@ -75,7 +82,7 @@ def create_device(db: Session, data: DeviceCreate):
 def update_device(db: Session, device_id: UUID, data: DeviceUpdate):
     device = get_device(db, device_id)
     update_data = data.model_dump(exclude_unset=True)
-    update_data.pop("hardware_id", None)
+    update_data.pop("serial_number", None)
     update_data.pop("recycler_id", None)
     return DeviceRepository.update(db, device, update_data)
 

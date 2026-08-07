@@ -5,6 +5,7 @@ from database import get_db
 from probe.schemas.device import DeviceCreate, DeviceRead, DeviceUpdate
 from probe.services.device import (
     get_device,
+    get_device_by_serial_number,
     list_devices,
     create_device,
     update_device,
@@ -23,6 +24,11 @@ def route_list_devices(db: Session = Depends(get_db)):
 @router.get("/{device_id}", response_model=DeviceRead)
 def route_get_device(device_id: uuid.UUID, db: Session = Depends(get_db)):
     return get_device(db, device_id)
+
+
+@router.get("/by-serial-number/{serial_number}", response_model=DeviceRead)
+def route_get_device_by_serial_number(serial_number: str, db: Session = Depends(get_db)):
+    return get_device_by_serial_number(db, serial_number)
 
 
 @router.post("/", response_model=DeviceRead, status_code=status.HTTP_201_CREATED)

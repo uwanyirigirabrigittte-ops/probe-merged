@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class DeviceBase(BaseModel):
-   hardware_id: str
+   serial_number: str
    recycler_id: UUID
    error_code: str | None = None
    channel: str

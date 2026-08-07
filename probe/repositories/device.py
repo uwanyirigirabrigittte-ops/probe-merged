@@ -15,8 +15,8 @@ class DeviceRepository:
         return db.query(Device).all()
 
     @staticmethod
-    def get_by_hardware_id(db: Session, hardware_id: str) -> Device | None:
-        return db.query(Device).filter(Device.hardware_id == hardware_id).first()
+    def get_by_serial_number(db: Session, serial_number: str) -> Device | None:
+        return db.query(Device).filter(Device.serial_number == serial_number).first()
 
     @staticmethod
     def create(db: Session, data: dict) -> Device:
