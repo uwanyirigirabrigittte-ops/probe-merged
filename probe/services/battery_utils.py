@@ -2,10 +2,6 @@ import pybamm
 
 
 def get_pybamm_parameters(chemistry: str) -> pybamm.ParameterValues:
-   """
-   Loads exact electrochemical parameter values matching
-   the cell chemistry recorded in the database.
-   """
    chem_upper = chemistry.upper()
   
    if "NMC" in chem_upper:
