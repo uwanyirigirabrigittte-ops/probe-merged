@@ -11,7 +11,7 @@ from probe.services.user import (
     delete_user,
     authenticate_user
 )
-from auth import get_current_user
+from probe.services.auth import get_current_user
 
 router = APIRouter(prefix="/users", tags=["users"])
 

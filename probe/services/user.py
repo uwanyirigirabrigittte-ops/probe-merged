@@ -4,7 +4,7 @@ from uuid import UUID
 
 from probe.repositories.user import user_repository
 from probe.schemas.user import UserCreate, UserUpdate
-from auth import hash_password, verify_password, create_access_token
+from probe.services.auth import hash_password, verify_password, create_access_token
 
 
 def authenticate_user(db: Session, email: str, password: str):

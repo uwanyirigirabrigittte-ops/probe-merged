@@ -44,13 +44,3 @@ def get_current_user(token=Depends(oauth2_scheme), db: Session = Depends(get_db)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
     return user
-
-def require_recycler(current_user=Depends(get_current_user)):
-    user_type = (
-        current_user.user_type.value
-        if hasattr(current_user.user_type, "value")
-        else str(current_user.user_type)
-    )
-    if user_type != "RECYCLER":
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Recyclers only")
-    return current_user
