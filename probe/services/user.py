@@ -69,35 +69,6 @@ def create_user(db: Session, data: UserCreate):
     return user_repository.create(db, user_dict)
 
 
-def update_user(db: Session, user_id: UUID, data: UserUpdate):
-    user = user_repository.get_by_id(db, user_id)
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-
-    update_data = data.model_dump(exclude_unset=True)
-
-    if "email" in update_data and update_data["email"]:
-        update_data["email"] = update_data["email"].strip().lower()
-
-    if "password_hash" in update_data and update_data["password_hash"]:
-        update_data["password_hash"] = hash_password(update_data["password_hash"])
-
-    if "user_type" in update_data and update_data["user_type"]:
-        clean_user_type = (
-            update_data["user_type"].value.strip()
-            if hasattr(update_data["user_type"], "value")
-            else str(update_data["user_type"]).strip()
-        )
-        if clean_user_type not in ["RECYCLER", "UPS_COMPANY"]:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid system operational role requested."
-            )
-        update_data["user_type"] = clean_user_type
-
-    return user_repository.update(db, user, update_data)
-
-
 def delete_user(db: Session, user_id: UUID):
     user = user_repository.get_by_id(db, user_id)
     if not user:

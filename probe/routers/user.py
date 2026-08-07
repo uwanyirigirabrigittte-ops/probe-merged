@@ -7,7 +7,6 @@ from probe.schemas.user import UserCreate, UserRead, UserUpdate
 from probe.services.user import (
     get_user,
     create_user,
-    update_user,
     delete_user,
     authenticate_user
 )
@@ -36,16 +35,6 @@ def route_get_user(user_id: uuid.UUID, db: Session = Depends(get_db), current_us
     if str(current_user.user_id) != str(user_id):
         raise HTTPException(status_code=403, detail="You can only view your own account")
     db_user = get_user(db, str(user_id))
-    if not db_user:
-        raise HTTPException(status_code=404, detail="User record not found")
-    return db_user
-
-
-@router.patch("/{user_id}", response_model=UserRead)
-def route_update_user(user_id: uuid.UUID, data: UserUpdate, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
-    if str(current_user.user_id) != str(user_id):
-        raise HTTPException(status_code=403, detail="You can only update your own account")
-    db_user = update_user(db, str(user_id), data)
     if not db_user:
         raise HTTPException(status_code=404, detail="User record not found")
     return db_user
