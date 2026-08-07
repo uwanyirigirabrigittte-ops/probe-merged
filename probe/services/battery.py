@@ -9,9 +9,6 @@ from probe.models.enums import BatteryStatus
 
 
 def evaluate_and_grade_battery(db: Session, battery_id:UUID, claimed_capacity_mah: float):
-    """
-    Runs the battery profile records through the PyBaMM validation loop.
-    """
     db_battery = battery_repository.get_by_id(db, battery_id)
     if not db_battery:
         return None
