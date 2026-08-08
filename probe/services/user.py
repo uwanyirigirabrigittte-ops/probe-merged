@@ -3,33 +3,29 @@ from fastapi import HTTPException, status
 from uuid import UUID
 
 from probe.repositories.user import user_repository
-from probe.schemas.user import UserCreate, UserUpdate
+from probe.schemas.user import UserCreate
 from probe.services.auth import hash_password, verify_password, create_access_token
 
 
 def authenticate_user(db: Session, email: str, password: str):
     clean_email = email.strip().lower()
     user = user_repository.get_by_email(db, clean_email)
-
     if not user or not verify_password(password, user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password."
         )
-
     token = create_access_token(user.user_id, user.user_type)
     return {"access_token": token, "token_type": "bearer"}
 
 
-def get_user(db: Session, user_id: UUID):
-    user = user_repository.get_by_id(db, user_id)
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-    return user
-
-
-def list_users(db: Session):
-    return user_repository.get_all(db)
+def get_user(db: Session, user_id: UUID, current_user):
+    if str(current_user.user_id) != str(user_id):
+        raise HTTPException(status_code=403, detail="You can only view your own account")
+    db_user = user_repository.get_by_id(db, str(user_id))
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User record not found")
+    return db_user
 
 
 def create_user(db: Session, data: UserCreate):
@@ -68,11 +64,12 @@ def create_user(db: Session, data: UserCreate):
 
     return user_repository.create(db, user_dict)
 
+def delete_user(db: Session, user_id: UUID, current_user):
+    if str(current_user.user_id) != str(user_id):
+        raise HTTPException(status_code=403, detail="You can only delete your own account")
 
-def delete_user(db: Session, user_id: UUID):
-    user = user_repository.get_by_id(db, user_id)
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    db_user = user_repository.get_by_id(db, str(user_id))
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User record not found")
 
-    user_repository.delete(db, user)
-    return {"detail": "User successfully deleted"}
+    user_repository.delete(db, db_user)
