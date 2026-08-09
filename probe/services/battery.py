@@ -26,19 +26,18 @@ def evaluate_and_grade_battery(db: Session, battery_id:UUID, claimed_capacity_ma
     return battery_repository.update(db, db_battery, {"status": calculated_status})
 
 
-
-
-
 def get_battery(db: Session, battery_id: UUID):
- 
+
    battery = battery_repository.get_by_id(db, battery_id)
    if not battery:
        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Battery asset target not found")
    return battery
 
 
+
 def list_batteries(db: Session):
    return battery_repository.get_all(db)
+
 
 
 def create_battery(db: Session, data: BatteryCreate):
@@ -47,11 +46,13 @@ def create_battery(db: Session, data: BatteryCreate):
    clean_category = data.category.strip()
 
 
+
    if not clean_chemistry or not clean_status or not clean_category:
        raise HTTPException(
            status_code=status.HTTP_400_BAD_REQUEST,
            detail="Battery profile fields cannot consist of empty parameters."
        )
+
 
 
    recycler = user_repository.get_by_id(db, data.recycler_id)
@@ -62,17 +63,20 @@ def create_battery(db: Session, data: BatteryCreate):
        )
 
 
+
    dumped_data = data.model_dump()
    dumped_data["chemistry"] = clean_chemistry
    dumped_data["status"] = clean_status
    dumped_data["category"] = clean_category
-  
+
    return battery_repository.create(db, dumped_data)
+
 
 
 def update_battery(db: Session, battery_id: UUID, data: BatteryUpdate):
    battery = get_battery(db, battery_id)
    return battery_repository.update(db, battery, data.model_dump(exclude_unset=True))
+
 
 
 def delete_battery(db: Session, battery_id: UUID):
