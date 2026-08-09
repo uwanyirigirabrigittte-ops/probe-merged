@@ -72,9 +72,6 @@ def create_device(db: Session, data: DeviceCreate):
     dumped_data["status"] = clean_status
     if data.description:
         dumped_data["description"] = data.description.strip()
-    if data.error_code:
-        dumped_data["error_code"] = data.error_code.strip()
-
 
     return DeviceRepository.create(db, dumped_data)
 
