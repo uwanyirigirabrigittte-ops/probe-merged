@@ -6,4 +6,5 @@ __all__ = [
    "UserCreate", "UserUpdate", "UserRead"
 ]
 
+from .device import DeviceBase, DeviceCreate, DeviceUpdate, DeviceRead
 
