@@ -8,3 +8,10 @@ class BookingStatus(str, enum.Enum):
     CONFIRMED = "CONFIRMED"
     CANCELED = "CANCELED"
     COMPLETED = "COMPLETED"
+
+
+class DeviceStatus(str, enum.Enum):
+    ACTIVE = "ACTIVE"
+    INACTIVE = "INACTIVE"
+
+

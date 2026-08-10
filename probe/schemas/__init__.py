@@ -4,3 +4,5 @@ __all__=[
       "BatteryCreate", "BatteryUpdate", "BatteryRead"
       
 ]
+from .device import DeviceBase, DeviceCreate, DeviceUpdate, DeviceRead
+

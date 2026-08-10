@@ -1,6 +1,6 @@
 from database import Base, engine
 from fastapi import FastAPI
-import probe.models as models
+from probe.routers import device_router
 
 
 Base.metadata.create_all(bind=engine)
@@ -11,3 +11,4 @@ from probe.routers import(
 )
 
 app.include_router(battery_router)
+app.include_router(device_router)
