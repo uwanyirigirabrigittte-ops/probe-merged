@@ -37,7 +37,6 @@ def get_battery(db: Session, battery_id: UUID):
 
 def list_batteries(db: Session, search: str = ""):
     all_batteries = battery_repository.get_all(db)
-   
     allowed_variants = ["Lithium-ion", "NMC", "LFP"]
     lithium_only = [b for b in all_batteries if b.chemistry in allowed_variants]
     return lithium_only
@@ -49,8 +48,6 @@ def create_battery(db: Session, data: BatteryCreate):
    clean_chemistry = data.chemistry.strip()
    clean_status = data.status.value.strip() if hasattr(data.status, 'value') else str(data.status).strip()
    clean_category = data.category.strip()
-
-
 
    if not clean_chemistry or not clean_status or not clean_category:
        raise HTTPException(
@@ -66,8 +63,6 @@ def create_battery(db: Session, data: BatteryCreate):
            status_code=status.HTTP_400_BAD_REQUEST,
            detail="Invalid asset assignment: Target recycler profile must exist and hold proper credentials."
        )
-
-
 
    dumped_data = data.model_dump()
    dumped_data["chemistry"] = clean_chemistry

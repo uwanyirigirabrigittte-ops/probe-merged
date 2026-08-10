@@ -24,30 +24,23 @@ def route_list_batteries(search: str = Query(default=""), db: Session = Depends(
 
 @router.get("/{battery_id}", response_model=BatteryRead)
 def route_get_battery(battery_id: uuid.UUID, db: Session = Depends(get_db)):
-    db_battery = get_battery(db, battery_id)
-    if not db_battery:
-        raise HTTPException(status_code=404, detail="Battery record not found")
-    return db_battery
+    return get_battery(db, battery_id)
+    
 
 
 @router.post("/", response_model=BatteryRead, status_code=status.HTTP_201_CREATED)
 def route_create_battery(data: BatteryCreate, db: Session = Depends(get_db)):
-    try:
         return create_battery(db, data)
-    except Exception as err:
-        raise HTTPException(status_code=400, detail=f"Failed to log battery: {str(err)}")
+
 
 
 @router.patch("/{battery_id}", response_model=BatteryRead)
 def route_update_battery(battery_id: uuid.UUID, data: BatteryUpdate, db: Session = Depends(get_db)):
-    db_battery = update_battery(db, battery_id, data)
-    if not db_battery:
-        raise HTTPException(status_code=404, detail="Battery record not found")
-    return db_battery
+    return update_battery(db, battery_id, data)
+  
 
 
 @router.delete("/{battery_id}", status_code=status.HTTP_204_NO_CONTENT)
 def route_delete_battery(battery_id: uuid.UUID, db: Session = Depends(get_db)):
-    success = delete_battery(db, battery_id)
-    if not success:
-        raise HTTPException(status_code=404, detail="Battery record not found")
+     delete_battery(db, battery_id)
+ 
