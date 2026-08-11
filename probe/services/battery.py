@@ -81,4 +81,5 @@ def update_battery(db: Session, battery_id: UUID, data: BatteryUpdate):
 
 def delete_battery(db: Session, battery_id: UUID):
    battery = get_battery(db, battery_id)
-   return battery_repository.delete(db, battery)
+   if battery:
+    battery_repository.delete(db, battery)
