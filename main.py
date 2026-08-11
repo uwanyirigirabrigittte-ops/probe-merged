@@ -7,9 +7,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(title="probe API", version="1.0.0")
 
 from probe.routers import(
-    battery_router,
     booking_router
 )
 
-app.include_router(battery_router)
 app.include_router(booking_router)

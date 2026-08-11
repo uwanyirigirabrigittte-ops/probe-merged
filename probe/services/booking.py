@@ -62,4 +62,4 @@ def update_booking(db: Session, booking_id: UUID, data: BookingUpdate):
 
 def delete_booking(db: Session, booking_id: UUID):
    booking = get_booking(db, booking_id)
-   return booking_repository.delete(db, booking)
+   booking_repository.delete(db, booking)
