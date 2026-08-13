@@ -4,11 +4,11 @@ from uuid import UUID
 from probe.repositories.battery import battery_repository
 from probe.repositories.user import user_repository
 from probe.schemas.battery import BatteryCreate, BatteryUpdate
-from probe.services.battery_utils import get_pybamm_parameters, verify_label_plausibility
 from probe.models.enums import BatteryStatus
+from probe.services.battery_utils import verify_label_plausibility, identify_battery_type
 
 
-def evaluate_and_grade_battery(db: Session, battery_id:UUID, claimed_capacity_mah: float):
+def evaluate_and_grade_battery(db: Session, battery_id: UUID, claimed_capacity_mah: float):
     db_battery = battery_repository.get_by_id(db, battery_id)
     if not db_battery:
         return None
@@ -17,8 +17,8 @@ def evaluate_and_grade_battery(db: Session, battery_id:UUID, claimed_capacity_ma
     if not is_legit:
         return battery_repository.update(db, db_battery, {"status": BatteryStatus.PROCESSING})
 
-    pybamm_params = get_pybamm_parameters(db_battery.chemistry)
-    if pybamm_params and claimed_capacity_mah <= 3500:
+    battery_type = identify_battery_type(db_battery.chemistry)
+    if battery_type and claimed_capacity_mah <= 3500:
         calculated_status = BatteryStatus.AVAILABLE
     else:
         calculated_status = BatteryStatus.PROCESSING
