@@ -34,11 +34,12 @@ def get_battery(db: Session, battery_id: UUID):
    return battery
 
 
-
 def list_batteries(db: Session, search: str = ""):
     all_batteries = battery_repository.get_all(db)
-    allowed_variants = ["Lithium-ion", "NMC", "LFP"]
-    lithium_only = [b for b in all_batteries if b.chemistry in allowed_variants]
+    lithium_only = [
+        b for b in all_batteries 
+        if identify_battery_type(b.chemistry) is not None
+    ]
     return lithium_only
 
 

@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 from .enums import BatteryStatus
-from typing import Literal
+
 
 
 from pydantic import BaseModel, ConfigDict
@@ -12,7 +12,7 @@ class BatteryBase(BaseModel):
    device_id: UUID
    status:BatteryStatus
    category: str
-   chemistry: Literal["Lithium-ion","NMC","LFP"] | None = None
+   chemistry: str| None = None
    
 class BatteryCreate(BatteryBase):
     pass

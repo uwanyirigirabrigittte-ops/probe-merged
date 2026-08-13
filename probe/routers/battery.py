@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, status, HTTPException, Query
 from sqlalchemy.orm import Session
 from database import get_db
 from probe.schemas.battery import BatteryCreate, BatteryRead, BatteryUpdate
+from probe.services.battery_utils import scraped_18650_reference_sheet
 
 
 from probe.services.battery import (
@@ -17,6 +18,11 @@ from probe.services.battery import (
 router = APIRouter(prefix="/batteries", tags=["batteries"])
 
 
+@router.get("/reference-library", status_code=status.HTTP_200_OK)
+def route_get_reference_library():
+    return scraped_18650_reference_sheet
+
+
 @router.get("/", response_model=list[BatteryRead])
 def route_list_batteries(search: str = Query(default=""), db: Session = Depends(get_db)):
    return list_batteries(db, search)
@@ -25,7 +31,6 @@ def route_list_batteries(search: str = Query(default=""), db: Session = Depends(
 @router.get("/{battery_id}", response_model=BatteryRead)
 def route_get_battery(battery_id: uuid.UUID, db: Session = Depends(get_db)):
     return get_battery(db, battery_id)
-    
 
 
 @router.post("/", response_model=BatteryRead, status_code=status.HTTP_201_CREATED)
