@@ -7,6 +7,11 @@ __all__=[
       "BookingCreate", "BookingUpdate", "BookingRead",
       "get_user", "create_user", "delete_user", "authenticate_user"
 ]
+      "BatteryCreate", "BatteryUpdate"
+       "get_user", "create_user", "delete_user", "authenticate_user"
+]
+from .user import get_user, create_user, delete_user, authenticate_user
+
 
 from .device import (
     create_device,
