@@ -1,6 +1,12 @@
 from .battery import BatteryCreate, BatteryUpdate
+from .booking import BookingCreate, BookingUpdate, BookingRead
+from .user import get_user, create_user, delete_user, authenticate_user
 
 __all__=[
+      "BatteryCreate", "BatteryUpdate", "BatteryRead",
+      "BookingCreate", "BookingUpdate", "BookingRead",
+      "get_user", "create_user", "delete_user", "authenticate_user"
+]
       "BatteryCreate", "BatteryUpdate"
        "get_user", "create_user", "delete_user", "authenticate_user"
 ]
