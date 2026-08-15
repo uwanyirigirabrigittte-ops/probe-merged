@@ -142,7 +142,7 @@ def identify_battery_type(text_written_on_battery: str) -> str | None:
 
 
 
-def verify_label_plausibility(category: str, nominal_capacity_mah: float) -> bool:
-    if category == "18650" and nominal_capacity_mah > 3600:
+def verify_label_plausibility(battery_type_text: str, nominal_capacity_mah: float) -> bool:
+    if "18650" in battery_type_text and nominal_capacity_mah > 3600:
         return False
     return True

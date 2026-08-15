@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from uuid import UUID
 from datetime import datetime
+from .enums import ReadingStatus
 
 
 class SensorReadingBase(BaseModel):
@@ -26,6 +27,8 @@ class SensorReadingResponse(SensorReadingBase):
    sensor_reading_id: UUID
    voltage: float = Field(..., description="Stored as v_load (voltage measured while discharging)")
    state_of_health: float = Field(..., description="Calculated State of Health percentage")
+   category: str = Field(..., description="Auto-generated quality grade based on SoH")
+   status: ReadingStatus = Field(..., description="Auto-generated battery disposition based on category")
    created_at: datetime
    updated_at: datetime
 
