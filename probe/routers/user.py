@@ -1,6 +1,7 @@
 from uuid import UUID
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
+
 from database import get_db
 from probe.schemas.user import UserCreate, UserRead, UserUpdate, ForgotPasswordRequest, ResetPasswordConfirm
 from probe.services.user import (
@@ -22,11 +23,8 @@ router = APIRouter(prefix="/users", tags=["users"])
 def route_create_user(
     data: UserCreate,
     db: Session = Depends(get_db),
-    current_user=Depends(get_current_user),
 ):
-    if current_user.user_type != "ADMIN":
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only ADMIN can create users")
-    return create_user(db, data, current_user)
+    return create_user(db, data)
 
 
 @router.post("/login")

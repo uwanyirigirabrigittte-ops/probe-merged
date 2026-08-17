@@ -5,7 +5,6 @@ from email.mime.multipart import MIMEMultipart
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load .env from project root regardless of working directory
 project_root = Path(__file__).resolve().parent.parent.parent
 load_dotenv(dotenv_path=project_root / ".env")
 
